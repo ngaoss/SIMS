@@ -1,0 +1,28 @@
+@model IEnumerable<SIMS.Web.Models.Course>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Course Code</th>
+            <th>Course Name</th>
+            <th>Credits</th>
+            <th>Instructor</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.CourseCode)</td>
+            <td>@Html.DisplayFor(modelItem => item.CourseName)</td>
+            <td>@Html.DisplayFor(modelItem => item.Credits)</td>
+            <td>@Html.DisplayFor(modelItem => item.Instructor.FullName)</td>
+            <td>
+                <a asp-controller="Courses" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-controller="Courses" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-controller="Courses" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

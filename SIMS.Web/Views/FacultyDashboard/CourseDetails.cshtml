@@ -1,0 +1,45 @@
+@model SIMS.Web.Models.Course
+
+@{
+    ViewData["Title"] = "Course Roster";
+}
+
+<h3>Roster for: @Model.CourseName (@Model.CourseCode)</h3>
+<a asp-action="Index">Back to My Courses</a>
+<hr />
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Student Name</th>
+            <th>Student Code</th>
+            <th>Grade</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var enrollment in Model.Enrollments)
+        {
+            <tr>
+                <td>@enrollment.Student.FullName</td>
+                <td>@enrollment.Student.StudentCode</td>
+                <form asp-action="UpdateGrade" method="post">
+                    <input type="hidden" name="enrollmentId" value="@enrollment.Id" />
+                    <input type="hidden" name="courseId" value="@Model.Id" />
+                    
+                    <td>
+                        <input type="number" name="grade" value="@enrollment.Grade" class="form-control" step="0.1" min="0" max="10" />
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-success btn-sm">Update Grade</button>
+                    </td>
+                </form>
+            </tr>
+        }
+    </tbody>
+</table>
