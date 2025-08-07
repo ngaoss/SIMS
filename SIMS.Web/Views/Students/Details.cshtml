@@ -1,0 +1,100 @@
+@model SIMS.Web.Models.Student
+
+@{
+    ViewData["Title"] = "Student Details";
+}
+
+<h1>@ViewData["Title"]</h1>
+<h4>@Model.FullName</h4>
+<hr />
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">
+        <h5 class="mb-0"><i class="bi bi-person-badge-fill"></i> Student Information</h5>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Student Code</dt>
+            <dd class="col-sm-9">@Model.StudentCode</dd>
+
+            <dt class="col-sm-3">Full Name</dt>
+            <dd class="col-sm-9">@Model.FullName</dd>
+
+            <dt class="col-sm-3">Date of Birth</dt>
+            <dd class="col-sm-9">@Model.DateOfBirth.ToString("dd/MM/yyyy")</dd>
+
+            <dt class="col-sm-3">Address</dt>
+            <dd class="col-sm-9">@Model.Address</dd>
+
+            <dt class="col-sm-3">Account Email</dt>
+            <dd class="col-sm-9">
+                @if (Model.User != null)
+                {
+                    @Model.User.Email
+                }
+                else
+                {
+                    <span class="text-muted">No linked account</span>
+                }
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header">
+        <h5 class="mb-0"><i class="bi bi-journal-text"></i> Enrolled Courses</h5>
+    </div>
+    <div class="card-body">
+        @if (Model.Enrollments != null && Model.Enrollments.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Course Code</th>
+                            <th>Course Name</th>
+                            <th>Credits</th>
+                            <th>Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var enrollment in Model.Enrollments)
+                        {
+                            <tr>
+                                <td>@enrollment.Course.CourseCode</td>
+                                <td>@enrollment.Course.CourseName</td>
+                                <td>@enrollment.Course.Credits</td>
+                                <td>
+                                    @if (enrollment.Grade.HasValue)
+                                    {
+                                        @enrollment.Grade
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Not Graded</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info mb-0">
+                This student is not currently enrolled in any courses.
+            </div>
+        }
+    </div>
+</div>
+
+<div class="mt-4">
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">
+        <i class="bi bi-pencil-square"></i> Edit
+    </a> 
+    <a asp-controller="AdminDashboard" asp-action="Index" class="btn btn-secondary">
+        <i class="bi bi-arrow-left-circle"></i> Back to Dashboard
+    </a>
+</div>
